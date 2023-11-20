@@ -1,0 +1,65 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author tungl
+ */
+public class Comment {
+
+    private int cid;
+    private String ctitle;
+    String userid;
+    private int tid;
+
+    public Comment() {
+    }
+
+    public Comment(int cid, String ctitle, String userid, int tid) {
+        this.cid = cid;
+        this.ctitle = ctitle;
+        this.userid = userid;
+        this.tid = tid;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public String getCtitle() {
+        return ctitle;
+    }
+
+    public void setCtitle(String ctitle) {
+        this.ctitle = ctitle;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public int getTid() {
+        return tid;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" + "cid=" + cid + ", ctitle=" + ctitle + ", userid=" + userid + ", tid=" + tid + '}';
+    }
+
+}

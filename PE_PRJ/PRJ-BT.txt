@@ -1,0 +1,229 @@
+--Check số nguyên tố
+ public static boolean isPrime(int n) {
+        if (n <= 1) {
+            return false;
+        }
+
+        for (int i = 2; i <= n / 2; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+public int tinhGiaiThua(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        } else {
+            int giaiThua = 1;
+
+            for (int i = 2; i <= n; i++) {
+                giaiThua *= i;
+            }
+
+            return giaiThua;
+        }
+   }
+
+
+---Check số chính phương
+public static boolean checkPerfectSquare(double x)  {
+	double sq = Math.sqrt(x); 	
+	return ((sq - Math.floor(sq)) == 0); 
+    } 
+============================================
+public int age(String dob_raw) {
+         String dobArr[] = dob_raw.split("-");
+         LocalDate cur = LocalDate.now();
+        return cur.getYear() -Integer.parseInt(dobArr[0]);
+    }
+
+============================================
+code.startsWith("FPT") : kiểm tra cái thằng code có bắt đầu bằng FPT không
+tương với endWith("FPT"): kiểm tra kết thúc xxxxFPT->true xxxxFPTxxx->false
+============================================
+ // mess hiển thị
+        String mess1 = "Student Code must begin with "FPT" and contains maximum 9 characters.";
+        String mess2 = "Student Name must contain 6 to 32 characters.";
+        String mess3 = "Student must be 18-year-old or older.";
+        String mess4 = "Student successs";
+        // get Data từ form
+        String code = request.getParameter("studentCode");
+        String name = request.getParameter("studentName");
+        String dob_raw = request.getParameter("dob");
+        // xử lý data
+        if (code.startsWith("FPT") && code.length() <= 9) {
+            mess1 = "";
+        } else {
+            mess4 = "";
+        }
+        if (name.length() >= 6 && name.length() <= 32) {
+            mess2 = "";
+        } else {
+            mess4 = "";
+        }
+        if (age(dob_raw) > 18) {
+            mess3 = "";
+        } else {
+            mess4 = "";
+        }
+        PrintWriter out = response.getWriter() 
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet RegisterServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<p>" + mess1 + "</p>");
+            out.println("<p>" + mess2 + "</p>");
+            out.println("<p>" + mess3 + "</p>");
+            out.println("<p>" + mess4 + "</p>");
+            out.println("</body>");
+            out.println("</html>");
+     
+===========================================================================
+
+------------Login------------------
+public Account login(String username, String password) {
+        String query = "SELECT * FROM Account WHERE [userid] = ? AND [password] =?";
+        Account u = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                u = new Account();
+                u.setUserid(resultSet.getString(1));
+                u.setPassword(resultSet.getString(2));
+                u.setDisplayName(resultSet.getString(3));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return u;
+    }
+
+=======================================================================================
+
+
+-----------------------------Update--------------------------
+ public void updateProduct(int id, long price, int quantity, int cateID, int statusProduct) {
+        String sql = "UPDATE [dbo].[Products_HE176091]\n"
+                + "   SET [Price] = ? ,[Quantity] = ?, [CategoryID] = ?, [isContinue] = ?"
+                + " WHERE ProductID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, price);
+            ps.setInt(2, quantity);
+            ps.setInt(3, cateID);
+            ps.setInt(4, statusProduct);
+            ps.setInt(5, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            status = "Error at updateProduct " + e.getMessage();
+        }
+    }
+
+==============================================================================
+
+--------------------------Delete----------------------
+ public void deleteProduct(int id) {
+        String sql = "DELETE FROM [dbo].[Products_HE176091]\n"
+                + "      WHERE ProductID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            status = "Error at deleteProduct " + e.getMessage();
+        }
+    }
+
+================================================================
+
+-------------Search-----------------------------------
+ public List<AuthorByTitle> searchAuthorByTitile(String name) {
+        List<AuthorByTitle> a = new ArrayList<>();
+        String sql = "select p.paperid, p.title, p.publisheddate \n"
+                + "from Author a, Author_Paper ap, Paper p\n"
+                + "where (a.authorid = ap.authorid) and (p.paperid = ap.paperid)\n"
+                + "and a.authorname like ? ";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, name); 
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                a.add(new AuthorByTitle(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+        } catch (SQLException e) {
+            e.getMessage();
+        }
+        return a;
+    }
+==========================================================
+
+-------------Insert------------
+ public void insert(String title, String startdate, String enddate) {
+        String sql = "INSERT INTO SchoolYear VALUES(?, ?, ?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, startdate);
+            ps.setString(3, enddate);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.getMessage();
+        }
+    }
+
+========================================================
+
+-------getAll----------------
+public List<Author> getAllAuthor() {
+        List<Author> a = new ArrayList<>();
+        String sql = "SELECT *\n"
+                + "FROM [PRJ321_FALL20_B5].[dbo].[Author]";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                a.add(new Author(rs.getString(1), rs.getString(2)));
+            }
+
+        } catch (SQLException e) {
+        }
+        return a;
+    }
+
+======================================================
+
+
+-------getAllById----------------
+ public Products getProductById(int id) {
+        String sql = "SELECT * FROM Products_HE176091 WHERE ProductID = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Products(
+                        rs.getInt(1),
+                        rs.getInt(3),
+                        rs.getInt(7),
+                        rs.getString(2),
+                        rs.getString(4),
+                        rs.getString(6),
+                        rs.getLong(5));
+            }
+        } catch (SQLException e) {
+            status = "Error at getProductById " + e.getMessage();
+        }
+        return null;
+    }
